@@ -94,7 +94,7 @@ const ProductPage = () => {
         </div>
       </div>
       <div className="flex justify-center py-5 gap-3">
-        <div className=" flex flex-wrap  gap-3 px-2">
+        <div className=" flex flex-wrap  gap-3 px-2 w-[95%] mx-auto">
           {products.length > 0 && products.map((product) => (
             <CardProduct key={product.id}>
               <CardProduct.Header image={product.image} />
