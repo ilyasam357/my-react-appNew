@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Button from "../Eelements/Button/indexBtn";
 
 const CardProduct = (props) => {
@@ -12,12 +13,12 @@ const CardProduct = (props) => {
 };
 
 const Header = (props) => {
-  const { image } = props;
+  const { image , id } = props;
   return (
     <>
-      <a href="#">
+    <Link to={`/product/${id}`}>
         <img className="w-full h-72 object-cover rounded-t-lg" src={image} alt="product image"  />
-      </a>
+    </Link>
     </>
   );
 };

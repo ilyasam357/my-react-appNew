@@ -3,9 +3,10 @@ import Button from "../components/Eelements/Button/indexBtn";
 import CardProduct from "../components/Fragments/CardProduct";
 import ReactDOM from "react-dom";
 import Counter from "../components/Fragments/Counter";
-import { json } from "react-router-dom";
+import { Link, json } from "react-router-dom";
 import { getProducts } from "../services/products.services";
 import { getUsername } from "../services/auth.services";
+import useLogin from "../hooks/useLogin";
 
 const Modal = ({ children }) => {
   return ReactDOM.createPortal(
@@ -17,12 +18,11 @@ const Modal = ({ children }) => {
   );
 };
 
-
 const ProductPage = () => {
   const [cart, setCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [products, setProducts] = useState([]);
-  const [username, setUsername] = useState("");
+  const username = useLogin();
 
   // get procuct
   useEffect(() => {
@@ -30,16 +30,16 @@ const ProductPage = () => {
       setProducts(data);
     });
   }, []);
-  // get username
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setUsername(getUsername(token));
-    }else{
-      window.location.href = "/login";
-    }
-    
-  }, []);
+  // // get username
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   if (token) {
+  //     setUsername(getUsername(token));
+  //   }else{
+  //     window.location.href = "/login";
+  //   }
+
+  // }, []);
 
   useEffect(() => {
     setCart(JSON.parse(localStorage.getItem("cart")) || []);
@@ -80,17 +80,20 @@ const ProductPage = () => {
     }
   };
 
-
   return (
     <>
       <div className="flex justify-between bg-green-600 h-20 px-5 items-center text-white">
-        {username}
+        <p>
+          <Link to="/profile"> {username}</Link>
+         
+        </p>
         <div className="flex gap-5">
           <Button
             customClass="text-white  font-medium rounded-lg text-sm  text-center"
             children="Cart"
             onClick={handleButtonClick}
           />
+
           <Button
             customClass="text-white ml-5 bg-black  font-medium rounded-lg text-sm px-5 py-2.5 text-center"
             children="Logout"
@@ -103,7 +106,7 @@ const ProductPage = () => {
           {products.length > 0 &&
             products.map((product) => (
               <CardProduct key={product.id}>
-                <CardProduct.Header image={product.image} />
+                <CardProduct.Header image={product.image} id={product.id}/>
                 <CardProduct.Body
                   title={product.title}
                   children={product.description}
